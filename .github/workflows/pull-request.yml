@@ -1,0 +1,25 @@
+name: pull-request-workflow
+run-name: ${{ github.actor }}
+on:
+  pull_request:
+    branches:
+      - master
+jobs: 
+  rodando-aplicacao-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonando repositório / 
+        uses: actions/checkout@v4
+
+      - name: Instalando node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+
+      - name: Instalando dependências
+        run: npm install
+
+      - name: Rodando projeto
+        run: |
+          node index.js &
+          sleep 5

@@ -1,0 +1,15 @@
+# Dependências do Node.js
+node_modules/
+
+# Relatórios de cobertura de testes do Jest
+coverage/
+
+# Logs de erro do npm
+npm-debug.log*
+npm-debug.log
+
+# Variáveis de ambiente
+.env
+
+# Cache do Linter (ESLint)
+.eslintcache
