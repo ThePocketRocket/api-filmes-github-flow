@@ -16,4 +16,14 @@ describe('Testes da API de Filmes', () => {
     expect(res.statusCode).toEqual(201);
     expect(res.body).toHaveProperty('nome', 'A Origem');
   });
+
+  it('Deve retornar 404 ao tentar deletar um filme inexistente (DELETE /api/filmes/:id)', async () => {
+    const res = await request(app).delete('/api/filmes/999');
+    expect(res.statusCode).toEqual(404);
+  });
+
+  it('Deve deletar um filme existente e retornar 204 (DELETE /api/filmes/:id)', async () => {
+    const res = await request(app).delete('/api/filmes/1');
+    expect(res.statusCode).toEqual(204);
+  });
 });
