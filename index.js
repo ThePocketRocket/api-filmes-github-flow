@@ -17,6 +17,11 @@ app.post('/api/filmes', (req, res) => {
   res.status(201).json(novoFilme);
 });
 
-app.listen(8080, () => {
-  console.log("Servidor rodando em http://localhost:8080");
-});
+/* istanbul ignore next */
+if (require.main === module) {
+  app.listen(8080, () => {
+    console.log("Servidor rodando em http://localhost:8080");
+  });
+}
+
+module.exports = app;
