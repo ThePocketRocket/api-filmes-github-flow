@@ -17,6 +17,16 @@ app.post('/api/filmes', (req, res) => {
   res.status(201).json(novoFilme);
 });
 
+app.delete('/api/filmes/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = filmes.findIndex(f => f.id === id);
+  if (index === -1) {
+    return res.status(404).send();
+  }
+  filmes.splice(index, 1);
+  return res.status(204).send();
+});
+
 /* istanbul ignore next */
 if (require.main === module) {
   app.listen(8080, () => {
