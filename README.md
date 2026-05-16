@@ -1,3 +1,5 @@
+[![Docker Image](https://badgen.net/badge/icon/DockerHub?icon=docker&label)](https://hub.docker.com/r/p0cketrocket/api-filmes)
+
 # API de Filmes
 
 Uma API RESTful simples desenvolvida em Node.js com Express para o gerenciamento de filmes, criada como projeto prático para a disciplina de Gestão de Configuração e Qualidade de Código.
@@ -24,6 +26,13 @@ Uma API RESTful simples desenvolvida em Node.js com Express para o gerenciamento
    ```bash
    npm run lint
    ```
+
+5. **Para rodar usando Docker:**
+   ```bash
+   docker build -t api-filmes .
+   docker run -p 8080:8080 api-filmes
+   ```
+   Acesse: `http://localhost:8080/api/filmes`
 
 ---
 
@@ -55,10 +64,12 @@ O projeto conta com um ecossistema robusto para garantir a máxima qualidade de 
    - Como requisito de segurança da branch `main`, apenas commits **criptograficamente assinados** (via chaves GPG ou SSH) são aceitos. Isso garante a autoria de cada linha de código inserida na baseline.
 
 5. **Integração Contínua (GitHub Actions)**
-   - O pipeline (`.github/workflows/ci.yml`) dispara automaticamente ao abrir ou atualizar um Pull Request para a `main`.
-   - O workflow está dividido em dois **Jobs separados**:
+   - O pipeline (`.github/workflows/ci.yml`) dispara automaticamente ao abrir ou atualizar um Pull Request, ou ao fazer merges para qualquer branch.
+   - O workflow está dividido em quatro **Jobs separados**:
      - `lint`: Verifica o estilo do código.
      - `test`: Executa a suíte de testes e falha se a cobertura for menor que 90%.
+     - `build-docker`: Constrói a imagem Docker para validar a integridade da aplicação (Roda em qualquer branch).
+     - `publish-docker`: Faz o envio da imagem validada para o Docker Hub (Executa exclusivamente na branch `main`).
    - Apenas com todos os status checks verdes o Pull Request pode ser aprovado.
 
 ---
