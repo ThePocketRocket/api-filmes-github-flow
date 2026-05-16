@@ -1,3 +1,5 @@
+[![Docker Image](https://badgen.net/badge/icon/DockerHub?icon=docker&label)](https://hub.docker.com/r/p0cketrocket/api-filmes)
+
 # API de Filmes
 
 Uma API RESTful simples desenvolvida em Node.js com Express para o gerenciamento de filmes, criada como projeto prático para a disciplina de Gestão de Configuração e Qualidade de Código.
