@@ -3,7 +3,7 @@ run-name: ${{ github.actor }}
 on:
   pull_request:
     branches:
-      - master
+      - main
 jobs: 
   rodando-aplicacao-pr:
     runs-on: ubuntu-latest
