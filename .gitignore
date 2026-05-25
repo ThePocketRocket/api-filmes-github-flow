@@ -13,3 +13,6 @@ npm-debug.log
 
 # Cache do Linter (ESLint)
 .eslintcache
+
+# Arquivos do Vagrant
+.vagrant/
