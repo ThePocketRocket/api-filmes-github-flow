@@ -27,39 +27,44 @@ Uma API RESTful simples desenvolvida em Node.js com Express para o gerenciamento
 
 ---
 
-## 🐳 Infraestrutura com Vagrant e VirtualBox
+## 🐳 Infraestrutura com Vagrant e Ansible
 
-O projeto contém um ambiente virtualizado automatizado configurado no `Vagrantfile`, executando duas máquinas virtuais.
+O projeto contém um ambiente virtualizado automatizado utilizando Vagrant e Ansible, executando duas máquinas virtuais.
 
 ### 1. Iniciar as Máquinas Virtuais
 No terminal, na raiz do projeto (onde está o `Vagrantfile`), execute:
 ```bash
 vagrant up
 ```
-*Este comando fará o download da imagem base (Ubuntu), criará as VMs (VM1 e VM2), configurará a rede interna e instalará o Node.js e as dependências na VM2 de forma automática.*
+*Este comando criará as VMs (VM1 e VM2). A VM1 será configurada como Nó de Controle, recebendo a instalação automática do Ansible. A VM2 será o Nó Gerenciado e terá a autenticação por senha liberada para acesso remoto via SSH.*
 
-### 2. Rodar o Backend na VM2
-Abra um terminal e acesse a VM2 via SSH:
-```bash
-vagrant ssh vm2
-```
-Dentro da VM2, navegue até a pasta sincronizada da aplicação e inicie o servidor:
-```bash
-cd /home/vagrant/vagrant_data
-node index.js
-```
-*A API agora estará rodando internamente na VM2 (IP: `192.168.56.20`).*
-
-### 3. Testar a comunicação a partir da VM1
-Com a API rodando na VM2, abra uma **nova janela de terminal** (deixando o servidor aberto na outra) e acesse a VM1:
+### 2. Executar o Provisionamento (Ansible)
+Abra um terminal e acesse a VM1 via SSH:
 ```bash
 vagrant ssh vm1
 ```
-Dentro da VM1, utilize o `curl` para testar a rota GET do backend rodando na VM2:
+Dentro da VM1, navegue até a pasta sincronizada do projeto e execute o Playbook do Ansible:
+```bash
+cd /vagrant
+ansible-playbook configura-node.yaml
+```
+*O Ansible irá se conectar à VM2 (IP: `192.168.56.20`), instalar dependências básicas, configurar o Node.js, clonar o código fonte da aplicação e instalar todas as dependências do projeto de forma 100% automatizada.*
+
+### 3. Rodar o Backend na VM2
+Após o Ansible finalizar com sucesso, abra um novo terminal, acesse a VM2 e inicie o servidor da API:
+```bash
+vagrant ssh vm2
+cd /home/vagrant/app
+node index.js
+```
+*A API agora estará rodando internamente na VM2.*
+
+### 4. Testar a comunicação a partir da VM1
+Com a API rodando na VM2, volte para a janela do terminal da VM1 e utilize o `curl` para testar a rota GET do backend:
 ```bash
 curl http://192.168.56.20:8080/api/filmes
 ```
-*Se a comunicação e a rede (Classe C) estiverem corretas, você verá um JSON com a lista de filmes ser impresso no console da VM1!*
+*Se a comunicação estiver correta, você verá o JSON com a lista de filmes ser impresso no console da VM1!*
 
 ---
 

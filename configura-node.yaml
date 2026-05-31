@@ -1,0 +1,47 @@
+---
+- name: Configurar Node e Instalar Aplicacao
+  hosts: app_servers
+  become: yes
+  tasks:
+    - name: Atualizar cache do apt
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Instalar Git e curl
+      apt:
+        name: 
+          - git
+          - curl
+        state: present
+
+    - name: Adicionar repositorio do Node.js
+      shell: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      args:
+        creates: /etc/apt/sources.list.d/nodesource.list
+
+    - name: Instalar Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Garantir que o diretorio da aplicacao existe
+      file:
+        path: /home/vagrant/app
+        state: directory
+        owner: vagrant
+        group: vagrant
+        recurse: yes
+
+    - name: Clonar o repositorio
+      git:
+        repo: 'https://github.com/ThePocketRocket/api-filmes-github-flow.git'
+        dest: /home/vagrant/app
+        version: main
+        force: yes
+      become: no
+
+    - name: Instalar dependencias do projeto
+      npm:
+        path: /home/vagrant/app
+      become: no
